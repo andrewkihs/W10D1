@@ -104,6 +104,22 @@ class DOMNodeCollection {
             ele.remove();
         });
     }
+
+    on(type, callback) {
+        this.arr.forEach( (ele) => {
+            ele.addEventListener(type, callback);
+            ele[`callback:${type}`] = callback;
+        })
+    }
+
+    off(type) {
+        this.arr.forEach((ele) => {
+            let func = ele[`callback:${type}`];
+            ele.removeEventListener(type, func);
+            ele[`callback:${type}`] = null;
+        })
+        
+    }
 }
 
 module.exports = DOMNodeCollection
