@@ -15,7 +15,7 @@
   \************************************/
 /***/ ((module) => {
 
-eval("class DOMNodeCollection {\n    constructor(arr) {\n        this.arr = arr;\n    }\n}\n\nmodule.exports = DOMNodeCollection\n\n//# sourceURL=webpack:///./src/dom_node_collection.js?");
+eval("class DOMNodeCollection {\n    constructor(arr) {\n        this.arr = arr;\n    }\n\n    html(arg) {\n        if (typeof arg == 'undefined') {\n            return this.arr[0].innerHTML;\n        } else {\n            this.arr.forEach(el => {\n                el.innerHTML = arg;\n            });\n        };\n    }\n\n    empty () {\n        this.html(\"\");\n    }  \n    \n\n    append(...args) {\n        //works for string\n\n        this.arr.forEach(outer => {\n            args.forEach(inner  => {\n                if (inner instanceof HTMLElement) {\n                    outer.innerHTML += inner.outerHTML;\n                } else if (inner instanceof DOMNodeCollection){\n                    inner.arr.forEach(finalChild => {\n                        outer.innerHTML += finalChild.outerHTML;\n                    });\n                } else if (typeof inner == \"string\") {\n                    outer.innerHTML += inner;\n                }\n            });\n        })\n    }\n}\n\nmodule.exports = DOMNodeCollection\n\n//# sourceURL=webpack:///./src/dom_node_collection.js?");
 
 /***/ }),
 
@@ -25,7 +25,7 @@ eval("class DOMNodeCollection {\n    constructor(arr) {\n        this.arr = arr;
   \**********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const DOMNodeCollection = __webpack_require__(/*! ./dom_node_collection */ \"./src/dom_node_collection.js\")\n\nwindow.$l = function(arg1) {\n    let result;\n    if (typeof arg1 == 'string') {\n        result = Array.prototype.slice.call(document.querySelectorAll(arg1));\n    } else if(arg1 instanceof HTMLElement) {\n        result = [arg1];\n    }\n    return new DOMNodeCollection(result);\n} \n\n//# sourceURL=webpack:///./src/index.js?");
+eval("const DOMNodeCollection = __webpack_require__(/*! ./dom_node_collection */ \"./src/dom_node_collection.js\");\n\n// console.log(DOMNodeCollection.prototype.html)\n// console.log(\"test index.js\")\nwindow.$l = function(arg1) {\n    let result;\n    if (typeof arg1 == 'string') {\n        result = Array.prototype.slice.call(document.querySelectorAll(arg1));\n    } else if(arg1 instanceof HTMLElement) {\n        result = [arg1];\n    }\n    return new DOMNodeCollection(result);\n} \n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ })
 
