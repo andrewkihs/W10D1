@@ -19,8 +19,6 @@ class DOMNodeCollection {
     
 
     append(...args) {
-        //works for string
-
         this.arr.forEach(outer => {
             args.forEach(inner  => {
                 if (inner instanceof HTMLElement) {
@@ -38,7 +36,6 @@ class DOMNodeCollection {
 
     attr(attributeName, value) {
         if (typeof value == 'undefined') {
-            //getter
             let result = this.arr[0].getAttribute(attributeName);
             return result;
         } else {
@@ -71,6 +68,41 @@ class DOMNodeCollection {
             ele.setAttribute('class', newClasses.trim());
             }
         })
+    }
+
+    children() {
+        let allChildren = [];
+        this.arr.forEach(ele => {
+            let eleChildren = ele.children;
+            allChildren = allChildren.concat(Array.prototype.slice.call(eleChildren));
+        })
+        return new DOMNodeCollection(allChildren);
+    }
+
+    parent(){
+        let allParents = [];
+        this.arr.forEach(ele => {
+            let eleParent = ele.parentElement;
+            if (!allParents.includes(eleParent)){
+                allParents.push(eleParent);
+            }
+        })
+        return new DOMNodeCollection(allParents)
+    }
+
+    find(selector) {
+        let retArr = []
+        this.arr.forEach(ele => {
+            let selected = ele.querySelectorAll(selector)
+            retArr = retArr.concat(Array.prototype.slice.call(selected));
+        })
+        return new DOMNodeCollection(retArr);
+    }
+
+    remove() {
+        this.arr.forEach(ele => {
+            ele.remove();
+        });
     }
 }
 
